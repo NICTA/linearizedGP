@@ -1,0 +1,17 @@
+List of software licenses used by this codes dependencies (not bundled):
+
+Core
+----
+
+Python 2.7  - PSF Agreement  - https://docs.python.org/2/license.html
+Scipy       - BSD            - http://www.scipy.org/scipylib/license.html
+Numpy       - BSD            - http://www.numpy.org/license.html
+NLopt       - LGPL           - http://ab-initio.mit.edu/wiki/index.php/NLopt_License_and_Copyright
+
+
+Tests and Experiments
+---------------------
+
+Matplotlib    - PSF variation  - http://matplotlib.org/users/license.html
+scikit-learn  - BSD            - https://github.com/scikit-learn/scikit-learn/blob/master/COPYING 
+GPMLtoolbox   - FreeBSD        - http://www.gaussianprocess.org/gpml/code/matlab/Copyright
