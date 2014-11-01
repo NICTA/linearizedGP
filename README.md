@@ -11,7 +11,7 @@ Extended and Unscented Gaussian Processes
 
 **Overview**:
 
-This code contains a **python** 2.7 and 3.x implementations of the Extended and
+This code contains **python** 2.7 and 3.x implementations of the Extended and
 Unscented Gaussian Processes (E/UGPs) described in [1]. These are similar to
 regular GPs, but the latent function, **f** can optionally have an extra
 nonlinear relationship to the observations, **y**, in the likelihood,
