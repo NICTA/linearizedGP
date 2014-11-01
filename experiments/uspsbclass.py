@@ -72,7 +72,7 @@ ys[ys == -1] = 0
 
 # Train the non-GP classifiers ------------------------------------------------
 
-print "\nLearning the support vector classifier"
+print("\nLearning the support vector classifier")
 C_range = 10.0 ** np.arange(-2, 9)
 gamma_range = 10.0 ** np.arange(-5, 4)
 param_grid = dict(gamma=gamma_range, C=C_range)
@@ -82,7 +82,7 @@ grid = GridSearchCV(SVC(kernel='rbf', probability=True), param_grid=param_grid,
 grid.fit(x.T, y)
 svc = grid.best_estimator_
 
-print "\nLearning the logistic regression classifier"
+print("\nLearning the logistic regression classifier")
 lreg = LogisticRegression(penalty='l2')
 lreg.fit(x.T, y)
 
@@ -90,22 +90,22 @@ lreg.fit(x.T, y)
 # Train the GPs ---------------------------------------------------------------
 
 # Statistical linearisation
-print "\nLearning statistically linearised classifier"
+print("\nLearning statistically linearised classifier")
 sgp = unscentedGP.unscentedGP(nlfunc=lgsig, kfunc=kfunc)
 sgp.learnLB(np.log(kbounds), ynoise=nbound)
 lml = sgp.learn(x, y, np.log(kinit), ynoise=ninit, verbose=True)
 
-print "Log marginal likelihood = {0}".format(lml)
-print "Hyper-parameters = {0}, noise = {1}".format(sgp.kparams, sgp.ynoise)
+print("Log marginal likelihood = {0}".format(lml))
+print("Hyper-parameters = {0}, noise = {1}".format(sgp.kparams, sgp.ynoise))
 
 # Taylor linearisation
-print "\nLearning Taylor series linearised classifier"
+print("\nLearning Taylor series linearised classifier")
 tgp = extendedGP.extendedGP(nlfunc=lgsig, dnlfunc=dlgsig, kfunc=kfunc)
 tgp.learnLB(np.log(kbounds), ynoise=nbound)
 lml = tgp.learn(x, y, np.log(kinit), ynoise=ninit, verbose=True)
 
-print "Log marginal likelihood = {0}".format(lml)
-print "Hyper-parameters = {0}, noise = {1}".format(tgp.kparams, tgp.ynoise)
+print("Log marginal likelihood = {0}".format(lml))
+print("Hyper-parameters = {0}, noise = {1}".format(tgp.kparams, tgp.ynoise))
 
 
 # Prediction ------------------------------------------------------------------
@@ -117,24 +117,24 @@ def bernloglike(pys):
 def errrate(pys):
     return float((ys != (pys >= 0.5)).sum()) / ys.shape[0]
 
-print "\n\nResults: \n----------------"
+print("\n\nResults: \n----------------")
 
 # Statlin
 pys_s, epys_s, Ems_s, Vms_s = sgp.quadpredict(xs)
-print "Stat lin: av nll = {:.6f}, Error rate = {:.6f}"\
-      .format(bernloglike(pys_s), errrate(pys_s))
+print("Stat lin: av nll = {:.6f}, Error rate = {:.6f}"
+      .format(bernloglike(pys_s), errrate(pys_s)))
 
 # Taylorlin
 pys_t, epys_t, Ems_t, Vms_t = tgp.predict(xs)
-print "Tayl lin: av nll = {:.6f}, Error rate = {:.6f}"\
-      .format(bernloglike(pys_t), errrate(pys_t))
+print("Tayl lin: av nll = {:.6f}, Error rate = {:.6f}"
+      .format(bernloglike(pys_t), errrate(pys_t)))
 
 # SVM
 pys_v = svc.predict_proba(xs.T)[:, 1]
-print "SVM: av nll = {:.6f}, Error rate = {:.6f}"\
-      .format(bernloglike(pys_v), errrate(pys_v))
+print("SVM: av nll = {:.6f}, Error rate = {:.6f}"
+      .format(bernloglike(pys_v), errrate(pys_v)))
 
 # Logistic Regression
 pys_r = lreg.predict_proba(xs.T)[:, 1]
-print "Logistic: av nll = {:.6f}, error rate = {:.6f}"\
-      .format(bernloglike(pys_r), errrate(pys_r))
+print("Logistic: av nll = {:.6f}, error rate = {:.6f}"
+      .format(bernloglike(pys_r), errrate(pys_r)))

@@ -28,9 +28,9 @@
 """
 
 import numpy as np
-from kernels import kern_se
-from gputils import jitchol, cholsolve, logdet
-from GP import GP
+from linearizedGP.kernels import kern_se
+from linearizedGP.gputils import jitchol, cholsolve, logdet
+from linearizedGP.GP import GP
 
 
 # The Unscented Gaussian Process Class ----------------------------------------
@@ -228,7 +228,7 @@ class unscentedGP(GP):
         endcond = "maxit"
         ybar = y.copy()
 
-        for i in xrange(maxit):
+        for i in range(maxit):
 
             # Store old values in case of divergence, and for "line search"
             objo, mo, ybaro = obj, m.copy(), ybar.copy()
@@ -248,7 +248,7 @@ class unscentedGP(GP):
             H = cholsolve(jitchol(AKAsig), AK).T
 
             # Do a bit of a heuristic line search for best step length
-            for j in xrange(maxsteps):
+            for j in range(maxsteps):
 
                 step = rate**j
                 m = (1 - step) * mo + step * H.dot(y - ybar + a * mo)
@@ -279,8 +279,8 @@ class unscentedGP(GP):
                 break
 
         if verbose is True:
-            print "iters: {}, endcond = {}, MAP = {}, " \
-                  "delta = {:.2e}".format(i, endcond, obj, dobj)
+            print("iters: {}, endcond = {}, MAP = {}, "
+                  "delta = {:.2e}".format(i, endcond, obj, dobj))
 
         # Calculate Free Energy
         Feng = -0.5 * (N * np.log(np.pi * 2 * self.ynoise**2)

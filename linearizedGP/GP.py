@@ -29,8 +29,8 @@
 
 import numpy as np
 import nlopt
-from kernels import kern_se
-from gputils import jitchol, cholsolve, logdet
+from linearizedGP.kernels import kern_se
+from linearizedGP.gputils import jitchol, cholsolve, logdet
 import scipy.integrate as spint
 
 
@@ -277,7 +277,7 @@ class GP(object):
                 self.m, self.C, self.obj = m, C, obj
 
             if verbose is True:
-                print "\tObjective: {}, params: {}".format(obj, params)
+                print("\tObjective: {}, params: {}".format(obj, params))
 
             return obj
 
@@ -299,7 +299,7 @@ class GP(object):
         optfval = opt.last_optimize_result()
 
         if verbose is True:
-            print "Optimiser finish criterion: {0}".format(optfval)
+            print("Optimiser finish criterion: {0}".format(optfval))
 
         # Store learned parameters (these have been over-written by nlopt)
         self.__extractparams(params, kparams, nlparams, ynoise)

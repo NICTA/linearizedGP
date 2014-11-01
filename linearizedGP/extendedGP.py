@@ -28,9 +28,9 @@
 """
 
 import numpy as np
-from kernels import kern_se
-from gputils import jitchol, cholsolve, logdet
-from GP import GP
+from linearizedGP.kernels import kern_se
+from linearizedGP.gputils import jitchol, cholsolve, logdet
+from linearizedGP.GP import GP
 
 
 # The Extended Gaussian Process Class -----------------------------------------
@@ -176,7 +176,7 @@ class extendedGP(GP):
         a = np.zeros(N)
         H = np.zeros((N, N))
 
-        for i in xrange(maxit):
+        for i in range(maxit):
 
             # Store old values in case of divergence, and for "line search"
             objo, mo, ao, Ho = obj, m.copy(), a.copy(), H.copy()
@@ -192,7 +192,7 @@ class extendedGP(GP):
             H = cholsolve(jitchol(AKAsig), AK).T
 
             # Do a bit of a heuristic line search for best step length
-            for j in xrange(maxsteps):
+            for j in range(maxsteps):
 
                 step = rate**j
                 m = (1 - step) * mo + step * H.dot(y - gm + a * mo)
@@ -219,8 +219,8 @@ class extendedGP(GP):
                 break
 
         if verbose is True:
-            print "iters: {}, endcond = {}, MAP = {}, " \
-                  "delta = {:.2e}".format(i, endcond, obj, dobj)
+            print("iters: {}, endcond = {}, MAP = {}, "
+                  "delta = {:.2e}".format(i, endcond, obj, dobj))
 
         # Useful equations for Free energy
         C = K - H.dot((a * K).T)

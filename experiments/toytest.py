@@ -109,7 +109,7 @@ def smse(x, Ex, N, sig):
 
 
 # Do the experiment
-for k in xrange(folds):
+for k in range(folds):
 
     xr = data['x'][data['train'][k, :].astype(int)]
     yr = data['y'][data['train'][k, :].astype(int)]
@@ -122,7 +122,7 @@ for k in xrange(folds):
     fvartest = fs.var()
     yvartest = ys.var()
 
-    print "Fold {0}".format(k)
+    print("Fold {0}".format(k))
 
     Feng = stlgp.learn(xr, yr, (1, 1), ynoise=1, verbose=False)
     Eys_s, eEys_s, Ems_s, Vms_s = stlgp.quadpredict(xs)
@@ -130,11 +130,11 @@ for k in xrange(folds):
     SMSEf_s[k] = smse(fs, Ems_s, Ntest, fvartest)
     llf_s[k] = nll(fs, Ems_s, Vms_s, Ntest)
 
-    print "\tStat. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"\
-        " smse(y) = {:.5f}"\
-        .format(Feng, llf_s[k], SMSEf_s[k], SMSEy_s[k])
-    print "\thyperparams = {}, lstd = {:.5f}.".format(stlgp.kparams,
-                                                      stlgp.ynoise)
+    print("\tStat. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"
+          " smse(y) = {:.5f}"
+          .format(Feng, llf_s[k], SMSEf_s[k], SMSEy_s[k]))
+    print("\thyperparams = {}, lstd = {:.5f}.".format(stlgp.kparams,
+                                                      stlgp.ynoise))
 
     lml_t = tlgp.learn(xr, yr, (1, 1), ynoise=1, verbose=False)
     Eys_t, eEys_t, Ems_t, Vms_t = tlgp.predict(xs)
@@ -142,11 +142,11 @@ for k in xrange(folds):
     SMSEf_t[k] = smse(fs, Ems_t, Ntest, fvartest)
     llf_t[k] = nll(fs, Ems_t, Vms_t, Ntest)
 
-    print "\tTay. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"\
-        " smse(y) = {:.5f}"\
-        .format(lml_t, llf_t[k], SMSEf_t[k], SMSEy_t[k])
-    print "\thyperparams = {}, lstd = {:.5f}.".format(tlgp.kparams,
-                                                      tlgp.ynoise)
+    print("\tTay. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"
+          " smse(y) = {:.5f}"
+          .format(lml_t, llf_t[k], SMSEf_t[k], SMSEy_t[k]))
+    print("\thyperparams = {}, lstd = {:.5f}.".format(tlgp.kparams,
+                                                      tlgp.ynoise))
 
     if dolinear is True:
         lml_l = lgp.learn(xr, yr, (1, 1), ynoise=1, verbose=False)
@@ -154,10 +154,10 @@ for k in xrange(folds):
         SMSEf_l[k] = smse(fs, Ems_l, Ntest, fvartest)
         llf_l[k] = nll(fs, Ems_l, Vms_l, Ntest)
 
-        print "\tLin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f}"\
-            .format(lml_l, llf_l[k], SMSEf_l[k])
-        print "\thyperparams = {}, lstd = {:.5f}.".format(lgp.kparams,
-                                                          lgp.ynoise)
+        print("\tLin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f}"
+              .format(lml_l, llf_l[k], SMSEf_l[k]))
+        print("\thyperparams = {}, lstd = {:.5f}.".format(lgp.kparams,
+                                                          lgp.ynoise))
 
     if plot is True:
         plt.plot(data['x'], data['f'], 'k', xs, Ems_s, 'bo', xs, Ems_t, 'ro')
@@ -216,7 +216,7 @@ if dolinear is True:
         .format(llf_l.mean(), llf_l.std(),
                 SMSEf_l.mean(), SMSEf_l.std())
 
-print "\n\n" + resstr
+print("\n\n" + resstr)
 
 
 # Save results

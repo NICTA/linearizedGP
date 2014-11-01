@@ -112,10 +112,10 @@ lml = gp.learn(xt, yt, (1, 1), ynoise=1, verbose=True)
 
 elapsed = (time.clock() - start)
 
-print "\nTraining time = {0} sec".format(elapsed)
-print "Free Energy = {0}".format(lml)
-print "Hyper-parameters = {0}, noise = {1}".format(gp.kparams, gp.ynoise)
-print "Non-linear function parameters = {0}".format(gp.nlparams)
+print("\nTraining time = {0} sec".format(elapsed))
+print("Free Energy = {0}".format(lml))
+print("Hyper-parameters = {0}, noise = {1}".format(gp.kparams, gp.ynoise))
+print("Non-linear function parameters = {0}".format(gp.nlparams))
 
 # Predict
 start = time.clock()
@@ -129,7 +129,7 @@ elif gptype is 'GP':
     Vys = Vms
 elapsed = (time.clock() - start)
 
-print "Prediction time = {0} sec".format(elapsed)
+print("Prediction time = {0} sec".format(elapsed))
 
 
 # Performance evaluation ------------------------------------------------------
@@ -138,14 +138,14 @@ if gptype is ('UGP' or 'GP'):
     heldoutp = -0.5 * ((ys - Eys)**2 / Vys + np.log(2 * np.pi * Vys))
 
 RMSE_y = np.sqrt(((ys - Eys)**2).sum() / ppoints)
-print "Target prediction root mean square error: {0}".format(RMSE_y)
+print("Target prediction root mean square error: {0}".format(RMSE_y))
 
 if gptype is ('UGP' or 'GP'):
     heldoutp = -0.5 * ((ys - Eys)**2 / Vys + np.log(2 * np.pi * Vys))
-    print "Target prediction log likelihood: {0}".format(heldoutp.sum())
+    print("Target prediction log likelihood: {0}".format(heldoutp.sum()))
 
 heldoutfs = -0.5 * ((fs - Ems)**2 / Vms + np.log(2 * np.pi * Vms))
-print "Latent prediction log likelihood: {0}".format(heldoutfs.sum())
+print("Latent prediction log likelihood: {0}".format(heldoutfs.sum()))
 
 
 # Plot the results ------------------------------------------------------------
