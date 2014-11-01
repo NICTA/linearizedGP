@@ -3,7 +3,7 @@ Extended and Unscented Gaussian Processes
 
 **Author**: [Daniel Steinberg](http://www.daniel-steinberg.info)
 
-**Date**: 5 Sep 2014
+**Date**: 31st Oct 2014
 
 **Institution**: [NICTA](http://www.nicta.com.au)
 
@@ -11,7 +11,7 @@ Extended and Unscented Gaussian Processes
 
 **Overview**:
 
-This code contains a **python 2.7** implementations of the Extended and
+This code contains a **python** 2.7 and 3.x implementations of the Extended and
 Unscented Gaussian Processes (E/UGPs) described in [1]. These are similar to
 regular GPs, but the latent function, **f** can optionally have an extra
 nonlinear relationship to the observations, **y**, in the likelihood,
@@ -72,7 +72,7 @@ Dependencies
 ------------
 
 For the linearized GPs:
-* Python 2.7
+* Python 2.7 or 3.x (tested with 3.3)
 * Scipy
 * Numpy
 * NLopt
@@ -90,6 +90,8 @@ All of these should be packages on most major GNU/Linux distributions (I am
 using Fedora) apart from the GPML toolbox, and should also be easily obtainable
 with various scientific python packages for Windows and OS X (e.g. Anaconda,
 Enthought Canopy, PythonXY, etc). 
+
+**NOTE**: Make sure you use the correct libraries for python 2.7 or 3.x!
 
 
 Installation
@@ -112,6 +114,8 @@ If you don't have pip, you can replace the last line with,
 sudo python setup.py install
 ```
 
+Where you should substitute the correct python/pip commands for the version of
+python you are using (like `pip-python3` or `python3` depending on your OS).
 If you don't want to run the experiments or tests, you do not need to keep the
 code downloaded from github now.
 
@@ -192,10 +196,10 @@ objects, e.g.,
 
 ```python
 
-print egp.m
-print egp.C
-print egp.kparams
-print egp.ynoise
+print(egp.m)
+print(egp.C)
+print(egp.kparams)
+print(egp.ynoise)
 
 ```
 

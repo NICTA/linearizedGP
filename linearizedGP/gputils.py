@@ -111,7 +111,7 @@ def k_fold_CV(X, Y, k=5):
     X_groups = np.array_split(X, k, axis=1)
     Y_groups = np.array_split(Y, k)
 
-    for i in xrange(k):
+    for i in range(k):
         X_s = X_groups[i]
         Y_s = Y_groups[i]
         X_r = np.hstack(X_groups[0:i] + X_groups[i + 1:])
@@ -138,7 +138,7 @@ def k_fold_CV_ind(nsamples, k=5):
     pindeces = np.random.permutation(nsamples)
     pgroups = np.array_split(pindeces, k)
 
-    for i in xrange(k):
+    for i in range(k):
         sind = pgroups[i]
         rind = np.concatenate(pgroups[0:i] + pgroups[i + 1:])
         yield (rind, sind)
