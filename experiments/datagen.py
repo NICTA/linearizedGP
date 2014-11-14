@@ -27,6 +27,7 @@
 
 """
 
+import os
 from linearizedGP import gputils, kernels
 import numpy as np
 import scipy.io as sio
@@ -41,30 +42,31 @@ kfunc = kernels.kern_m52
 k_sigma = 0.8
 k_length = 0.6
 
+savedir = 'data'
 
 # Nonlinear functions
 
-#savename = "data/signdata.mat"
+#savename = "signdata.mat"
 #fctn = "2 * np.sign(f) + f**3"
 #dfctn = ""
 
-#savename = "data/tanhdata.mat"
+#savename = "tanhdata.mat"
 #fctn = "np.tanh(2*f)"
 #dfctn = "2 - 2 * np.tanh(2*f)**2"
 
-#savename = "data/sindata.mat"
+#savename = "sindata.mat"
 #fctn = "np.sin(f)"
 #dfctn = "np.cos(f)"
 
-#savename = "data/lineardata.mat"
+#savename = "lineardata.mat"
 #fctn = "f"
 #dfctn = "np.ones(f.shape)"
 
-#savename = 'data/poly3data.mat'
+#savename = 'poly3data.mat'
 #fctn = "f**3 + f**2 + f"
 #dfctn = "3*f**2 + 2*f + 1"
 
-savename = "data/expdata.mat"
+savename = "expdata.mat"
 fctn = "np.exp(f)"
 dfctn = "np.exp(f)"
 
@@ -94,6 +96,9 @@ datadic = {
     }
 
 # Save the data to disk
+if not os.path.exists(savedir):
+    os.mkdir(savedir)
+
 for k, (sind, rind) in enumerate(gputils.k_fold_CV_ind(npoints, k=folds)):
 
     datadic['train'].append(rind)
@@ -102,4 +107,4 @@ for k, (sind, rind) in enumerate(gputils.k_fold_CV_ind(npoints, k=folds)):
 datadic['train'] = np.array(datadic['train'])
 datadic['test'] = np.array(datadic['test'])
 
-sio.savemat(savename, datadic)
+sio.savemat(os.path.join(savedir, savename), datadic)

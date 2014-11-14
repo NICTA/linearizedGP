@@ -28,6 +28,7 @@
 
 """
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
@@ -39,11 +40,14 @@ from linearizedGP import kernels
 
 # Some parameters for the experiment ------------------------------------------
 
-#dataset = 'data/tanhdata.mat'
-#dataset = 'data/sindata.mat'
-#dataset = 'data/lineardata.mat'
-#dataset = 'data/poly3data.mat'
-dataset = 'data/expdata.mat'
+datadir = 'data'
+resdir = 'results'
+
+#dataset = 'tanhdata.mat'
+#dataset = 'sindata.mat'
+#dataset = 'lineardata.mat'
+#dataset = 'poly3data.mat'
+dataset = 'expdata.mat'
 
 plot = False
 saveresults = True
@@ -52,13 +56,13 @@ dolinear = False
 # -----------------------------------------------------------------------------
 
 # Results save name
-splitname = (dataset.replace('data/', 'results/')).split('.')
+splitname = [resdir] + dataset.split('.')
 savename = ''.join(splitname[:-1]) + '_res.' + splitname[-1]
 restext = ''.join(splitname[:-1]) + '_res.txt'
 
 
 # Load and convert the dataset
-data = sio.loadmat(dataset, squeeze_me=True)
+data = sio.loadmat(os.path.join(datadir, dataset), squeeze_me=True)
 nlfunc = lambda f: eval(data['func'])
 dnlfunc = lambda f: eval(data['dfunc'])
 folds = len(data['test'])
@@ -221,6 +225,9 @@ print("\n\n" + resstr)
 
 # Save results
 if saveresults is True:
+
+    if not os.path.exists(resdir):
+        os.mkdir(resdir)
 
     with open(restext, "w") as resfile:
         resfile.write(data['func'] + ":\n\n" + resstr)

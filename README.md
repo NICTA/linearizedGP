@@ -243,7 +243,7 @@ be done by un-commenting the relevant lines in the script for the nonlinear
 forward model you wish to generate data from, i.e.,
 
 ```python
-savename = "data/expdata.mat"
+savename = "expdata.mat"
 fctn = "np.exp(f)"
 dfctn = "np.exp(f)"
 ```
@@ -257,10 +257,10 @@ In [1]: run experiments/datagen.py
 ```
 
 Now to run the experiments, point the `dataset` variable in
-`experiments/toytest.py` to the data you just generated, change the values of
-the `plot`, `saveresults` and `dolinear` variables as you see fit (the
-`dolinear` variable toggles an extra experiment for running a normal GP), then
-from the ipython console run,
+`experiments/toytest.py` to the data you just generated (e.g.
+`"data/expdata.mat"`), change the values of the `plot`, `saveresults` and
+`dolinear` variables as you see fit (the `dolinear` variable toggles an extra
+experiment for running a normal GP), then from the ipython console run,
 
 ```python
 In [2]: run experiments/toytest.py
