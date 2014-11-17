@@ -22,6 +22,7 @@
     2014 submission).
 
     Author:     Daniel Steinberg (daniel.steinberg@nicta.com.au)
+                modified by Simon O'Callaghan
     Institute:  NICTA
     Date:       4 Sep 2014
 
@@ -54,61 +55,60 @@ fctnList = fctnList + ["2 * np.sign(f) + f**3"]
 dfctnList = dfctnList + [""]
 
 savenameList = savenameList + ["tanhdata.mat"]
-fctnList = fctnList +  ["np.tanh(2*f)"]
+fctnList = fctnList + ["np.tanh(2*f)"]
 dfctnList = dfctnList + ["2 - 2 * np.tanh(2*f)**2"]
 
 savenameList = savenameList + ["sindata.mat"]
-fctnList = fctnList +  ["np.sin(f)"]
+fctnList = fctnList + ["np.sin(f)"]
 dfctnList = dfctnList + ["np.cos(f)"]
 
 savenameList = savenameList + ["lineardata.mat"]
-fctnList = fctnList +  ["f"]
+fctnList = fctnList + ["f"]
 dfctnList = dfctnList + ["np.ones(f.shape)"]
 
 savenameList = savenameList + ['poly3data.mat']
-fctnList = fctnList +  ["f**3 + f**2 + f"]
+fctnList = fctnList + ["f**3 + f**2 + f"]
 dfctnList = dfctnList + ["3*f**2 + 2*f + 1"]
 
 savenameList = savenameList + ["expdata.mat"]
-fctnList = fctnList +  ["np.exp(f)"]
+fctnList = fctnList + ["np.exp(f)"]
 dfctnList = dfctnList + ["np.exp(f)"]
 
 for fwdmdlInd in range(len(savenameList)):
-	nlfunc = lambda f: eval(fctnList[fwdmdlInd])
-	dnlfunc = lambda f: eval(dfctnList[fwdmdlInd])
+    nlfunc = lambda f: eval(fctnList[fwdmdlInd])
+    dnlfunc = lambda f: eval(dfctnList[fwdmdlInd])
 
-	# Construct the dataset
-	x = np.linspace(-2 * np.pi, 2 * np.pi, npoints)
-	fseed = np.random.randn(npoints)
-	U, S, V = np.linalg.svd(kfunc(x[np.newaxis, :], x[np.newaxis, :], k_sigma,
-			        k_length))
-	L = U.dot(np.diag(np.sqrt(S))).dot(V)
-	f = fseed.dot(L)
-	y = nlfunc(f) + np.random.randn(npoints) * noise
+    # Construct the dataset
+    x = np.linspace(-2 * np.pi, 2 * np.pi, npoints)
+    fseed = np.random.randn(npoints)
+    U, S, V = np.linalg.svd(kfunc(x[np.newaxis, :], x[np.newaxis, :], k_sigma,
+                            k_length))
+    L = U.dot(np.diag(np.sqrt(S))).dot(V)
+    f = fseed.dot(L)
+    y = nlfunc(f) + np.random.randn(npoints) * noise
 
+    # Make the dictionary to save into a mat structure
+    datadic = {
+        'noise':        noise,
+        'func':         fctnList[fwdmdlInd],
+        'dfunc':        dfctnList[fwdmdlInd],
+        'x':            x,
+        'f':            f,
+        'y':            y,
+        'train':        [],
+        'test':         []
+        }
 
-	# Make the dictionary to save into a mat structure
-	datadic = {
-	    'noise':        noise,
-	    'func':         fctnList[fwdmdlInd],
-	    'dfunc':        dfctnList[fwdmdlInd],
-	    'x':            x,
-	    'f':            f,
-	    'y':            y,
-	    'train':        [],
-	    'test':         []
-	    }
+    # Save the data to disk
+    if not os.path.exists(savedir):
+        os.mkdir(savedir)
 
-	# Save the data to disk
-	if not os.path.exists(savedir):
-	    os.mkdir(savedir)
+    for k, (sind, rind) in enumerate(gputils.k_fold_CV_ind(npoints, k=folds)):
 
-	for k, (sind, rind) in enumerate(gputils.k_fold_CV_ind(npoints, k=folds)):
+        datadic['train'].append(rind)
+        datadic['test'].append(sind)
 
-	    datadic['train'].append(rind)
-	    datadic['test'].append(sind)
+    datadic['train'] = np.array(datadic['train'])
+    datadic['test'] = np.array(datadic['test'])
 
-	datadic['train'] = np.array(datadic['train'])
-	datadic['test'] = np.array(datadic['test'])
-
-	sio.savemat(os.path.join(savedir, savenameList[fwdmdlInd]), datadic)
+    sio.savemat(os.path.join(savedir, savenameList[fwdmdlInd]), datadic)

@@ -236,25 +236,14 @@ To run the experiments from [1], firstly make sure you have the
 running python code from an [ipython](http://ipython.org) console, and the
 following instructions will assume this is the case.
 
+
 ### Toy inversion experiments
 
-Firstly, generate the data using the `experiments/datagen.py` script. This can
-be done by un-commenting the relevant lines in the script for the nonlinear
-forward model you wish to generate data from, i.e.,
-
-```python
-savename = "expdata.mat"
-fctn = "np.exp(f)"
-dfctn = "np.exp(f)"
-```
-
-for the exponential forward model. `savename` tells the script where to save
-the data. Then start an ipython instance in the where you downloaded the 
-`linearizedGP` code, and from the ipython console run,
-
-```python
-In [1]: run experiments/datagen.py
-```
+Firstly, generate the data using the `experiments/datagen.py` script. This will
+generate random data for all of the forward models in the paper and save them
+as mat files in the `data` directory (thanks to
+[socallaghan](https://github.com/socallaghan) for automating this). These files
+can also be opened with Matlab and Octave.
 
 Now to run the experiments, point the `dataset` variable in
 `experiments/toytest.py` to the data you just generated (e.g.
