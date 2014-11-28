@@ -292,7 +292,7 @@ References
 
 **[1]** D. M. Steinberg, E. V. Bonilla. Extended and Unscented Gaussian
     Processes, Advances in Neural and Information Processing Systems (NIPS),
-    Montreal, December 2014 [[PDF]](http://papers.nips.cc/paper/5455-extended-and-unscented-gaussian-processes).
+    Montreal, December 2014, [[PDF]](http://papers.nips.cc/paper/5455-extended-and-unscented-gaussian-processes).
 
 
 Acknowledgements
