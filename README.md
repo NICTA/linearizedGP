@@ -12,9 +12,10 @@ Extended and Unscented Gaussian Processes
 **Overview**:
 
 This code contains **python** 2.7 and 3.x implementations of the Extended and
-Unscented Gaussian Processes (E/UGPs) described in [1]. These are similar to
-regular GPs, but the latent function, **f** can optionally have an extra
-nonlinear relationship to the observations, **y**, in the likelihood,
+Unscented Gaussian Processes (E/UGPs) for inversion problems as described in
+[1]. These are similar to regular GPs, but the latent function, **f** can
+optionally have an extra nonlinear relationship to the observations, **y**, in
+the likelihood,
 
 * Normal GP likelihood: **y** ~ N(<b>f</b>, &sigma;<sup>2</sup>**I**) or for a
   single observation, *n*, y<sub>n</sub> = f<sub>n</sub> + &epsilon;. 
@@ -291,7 +292,7 @@ References
 
 **[1]** D. M. Steinberg, E. V. Bonilla. Extended and Unscented Gaussian
     Processes, Advances in Neural and Information Processing Systems (NIPS),
-    Montreal, December 2014.
+    Montreal, December 2014 [[PDF]](http://papers.nips.cc/paper/5455-extended-and-unscented-gaussian-processes).
 
 
 Acknowledgements
