@@ -57,6 +57,8 @@ nlfunc = lambda f: 2 * np.sign(f) + f**3
 #nlfunc = lambda f: np.round(np.exp(2 * f))
 
 # Differentiable
+#nlfunc = lambda f: f**2 + 1
+#dnlfunc = lambda f: 2*f
 #nlfunc = lambda f: f
 #dnlfunc = lambda f: np.ones(f.shape)
 #nlfunc = lambda f: np.tanh(2*f)

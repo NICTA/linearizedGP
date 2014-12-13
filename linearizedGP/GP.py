@@ -209,6 +209,7 @@ class GP(object):
                     *parameters* of the GP, i.e. the posterior mean and
                     covariance, it should have the following minimal form:
 
+
                     def learnfunc(y, K, delta=None, maxit=None, verbose=False):
 
                         ... do some calcs

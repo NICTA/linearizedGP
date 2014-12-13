@@ -216,7 +216,7 @@ class unscentedGP(GP):
 
         # Establish some parameters
         N = y.shape[0]
-        m = np.zeros(N)
+        m = np.random.randn(N) / 100.0
 
         # Make sigma points in latent space
         C = K.copy()

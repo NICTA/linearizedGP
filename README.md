@@ -235,7 +235,15 @@ Experiments
 To run the experiments from [1], firstly make sure you have the
 [dependencies](#dependencies) installed for the relevant experiments. I prefer
 running python code from an [ipython](http://ipython.org) console, and the
-following instructions will assume this is the case.
+following instructions will assume this is the case. 
+
+Note that since we released the paper, we have changed the code slightly so
+that you may not get the exact results we got in the paper. If you wish to get
+the exact same results, make sure the initial guess at the posterior mean (m)
+is all zeros instead of being randomly initialised (change lines 166 and 219 of
+the EGP and UGP code respectively). We made this change because initialising m
+as all zeros lead to some pathological errors for some forward models (like for
+functions that have zero gradient at zero).
 
 
 ### Toy inversion experiments
