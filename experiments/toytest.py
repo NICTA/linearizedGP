@@ -43,10 +43,10 @@ from linearizedGP import kernels
 datadir = 'data'
 resdir = 'results'
 
-#dataset = 'tanhdata.mat'
-#dataset = 'sindata.mat'
-#dataset = 'lineardata.mat'
-#dataset = 'poly3data.mat'
+# dataset = 'lineardata.mat'
+# dataset = 'poly3data.mat'
+# dataset = 'tanhdata.mat'
+# dataset = 'sindata.mat'
 dataset = 'expdata.mat'
 
 plot = False
@@ -72,12 +72,12 @@ folds = len(data['test'])
 stlgp = unscentedGP.unscentedGP(nlfunc, kernels.kern_m52)
 tlgp = extendedGP.extendedGP(nlfunc, dnlfunc, kernels.kern_m52)
 
-stlgp.learnLB((1e-1, 1e-1), ynoise=1e-2)
-tlgp.learnLB((1e-1, 1e-1), ynoise=1e-2)
+stlgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
+tlgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
 
 if dolinear is True:
     lgp = GP.GP(kernels.kern_m52)
-    lgp.learnLB((1e-1, 1e-1), ynoise=1e-2)
+    lgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
 
 # Pre-allocate
 llf_s = np.zeros(folds)
@@ -165,7 +165,7 @@ for k in range(folds):
 
     if plot is True:
         plt.plot(data['x'], data['f'], 'k', xs, Ems_s, 'bo', xs, Ems_t, 'ro')
-        plt.plot(data['x'], data['y'], 'k--', xs, Eys_s, 'b.', xs, Eys_t, 'r.')
+        plt.plot(data['x'], data['y'], 'k.', xs, Eys_s, 'b.', xs, Eys_t, 'r.')
         plt.legend(['f', 'E[m] st', 'E[m] ta', 'y', 'E[y] st', 'E[y] ta'])
         plt.grid(True)
         plt.show()

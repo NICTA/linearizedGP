@@ -40,6 +40,7 @@ noise = 0.2
 folds = 5
 plot = False
 kfunc = kernels.kern_m52
+# kfunc = kernels.kern_se
 k_sigma = 0.8
 k_length = 0.6
 
