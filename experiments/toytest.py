@@ -52,6 +52,8 @@ dataset = 'expdata.mat'
 plot = False
 saveresults = True
 dolinear = False
+kern = kernels.kern_se
+# kern = kernels.kern_m52
 
 # -----------------------------------------------------------------------------
 
@@ -69,14 +71,14 @@ folds = len(data['test'])
 
 
 # Make the GPs
-stlgp = unscentedGP.unscentedGP(nlfunc, kernels.kern_m52)
-tlgp = extendedGP.extendedGP(nlfunc, dnlfunc, kernels.kern_m52)
+stlgp = unscentedGP.unscentedGP(nlfunc, kern)
+tlgp = extendedGP.extendedGP(nlfunc, dnlfunc, kern)
 
 stlgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
 tlgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
 
 if dolinear is True:
-    lgp = GP.GP(kernels.kern_m52)
+    lgp = GP.GP(kern)
     lgp.learnLB((1e-1, 1e-1), ynoise=1e-1)
 
 # Pre-allocate

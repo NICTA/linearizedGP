@@ -39,8 +39,8 @@ npoints = 1000  # Testing and training points
 noise = 0.2
 folds = 5
 plot = False
-kfunc = kernels.kern_m52
-# kfunc = kernels.kern_se
+# kfunc = kernels.kern_m52
+kfunc = kernels.kern_se
 k_sigma = 0.8
 k_length = 0.6
 
@@ -75,17 +75,18 @@ savenameList = savenameList + ["expdata.mat"]
 fctnList = fctnList + ["np.exp(f)"]
 dfctnList = dfctnList + ["np.exp(f)"]
 
+# Construct the dataset (use the same latent function across datasets)
+x = np.linspace(-2 * np.pi, 2 * np.pi, npoints)
+fseed = np.random.randn(npoints)
+U, S, V = np.linalg.svd(kfunc(x[np.newaxis, :], x[np.newaxis, :], k_sigma,
+                        k_length))
+L = U.dot(np.diag(np.sqrt(S))).dot(V)
+f = fseed.dot(L)
+
 for fwdmdlInd in range(len(savenameList)):
     nlfunc = lambda f: eval(fctnList[fwdmdlInd])
     dnlfunc = lambda f: eval(dfctnList[fwdmdlInd])
 
-    # Construct the dataset
-    x = np.linspace(-2 * np.pi, 2 * np.pi, npoints)
-    fseed = np.random.randn(npoints)
-    U, S, V = np.linalg.svd(kfunc(x[np.newaxis, :], x[np.newaxis, :], k_sigma,
-                            k_length))
-    L = U.dot(np.diag(np.sqrt(S))).dot(V)
-    f = fseed.dot(L)
     g = nlfunc(f)
     y = g + np.random.randn(npoints) * noise
 
