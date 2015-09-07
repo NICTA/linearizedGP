@@ -82,6 +82,8 @@ if dolinear is True:
 # Pre-allocate
 llf_s = np.zeros(folds)
 llf_t = np.zeros(folds)
+SMSEg_s = np.zeros(folds)
+SMSEg_t = np.zeros(folds)
 SMSEf_s = np.zeros(folds)
 SMSEf_t = np.zeros(folds)
 SMSEy_s = np.zeros(folds)
@@ -120,10 +122,12 @@ for k in range(folds):
     xs = data['x'][data['test'][k, :].astype(int)]
     ys = data['y'][data['test'][k, :].astype(int)]
     fs = data['f'][data['test'][k, :].astype(int)]
+    gs = data['g'][data['test'][k, :].astype(int)]
 
     Ntrain = xr.shape[0]
     Ntest = xs.shape[0]
     fvartest = fs.var()
+    gvartest = gs.var()
     yvartest = ys.var()
 
     print("Fold {0}".format(k))
@@ -132,11 +136,12 @@ for k in range(folds):
     Eys_s, eEys_s, Ems_s, Vms_s = stlgp.quadpredict(xs)
     SMSEy_s[k] = smse(ys, Eys_s, Ntest, yvartest)
     SMSEf_s[k] = smse(fs, Ems_s, Ntest, fvartest)
+    SMSEg_s[k] = smse(gs, Eys_s, Ntest, gvartest)
     llf_s[k] = nll(fs, Ems_s, Vms_s, Ntest)
 
     print("\tStat. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"
-          " smse(y) = {:.5f}"
-          .format(Feng, llf_s[k], SMSEf_s[k], SMSEy_s[k]))
+          " smse(y) = {:.5f}, smse(g) = {:.5f}."
+          .format(Feng, llf_s[k], SMSEf_s[k], SMSEy_s[k], SMSEg_s[k]))
     print("\thyperparams = {}, lstd = {:.5f}.".format(stlgp.kparams,
                                                       stlgp.ynoise))
 
@@ -144,11 +149,12 @@ for k in range(folds):
     Eys_t, eEys_t, Ems_t, Vms_t = tlgp.predict(xs)
     SMSEy_t[k] = smse(ys, Eys_t, Ntest, yvartest)
     SMSEf_t[k] = smse(fs, Ems_t, Ntest, fvartest)
+    SMSEg_t[k] = smse(gs, Eys_t, Ntest, gvartest)
     llf_t[k] = nll(fs, Ems_t, Vms_t, Ntest)
 
     print("\tTay. lin. GP F = {:.5f}, ll(f) = {:.5f}, smse(f) = {:.5f},"
-          " smse(y) = {:.5f}"
-          .format(lml_t, llf_t[k], SMSEf_t[k], SMSEy_t[k]))
+          " smse(y) = {:.5f}, smse(g) = {:.5f}."
+          .format(lml_t, llf_t[k], SMSEf_t[k], SMSEy_t[k], SMSEg_t[k]))
     print("\thyperparams = {}, lstd = {:.5f}.".format(tlgp.kparams,
                                                       tlgp.ynoise))
 
@@ -187,16 +193,20 @@ resstr = "Final result:" \
          "\n\t\t -ll(f): av = {:.5f}, std = {:.5f}" \
          "\n\t\t smse(f): av = {:.4e}, std = {:.4e}" \
          "\n\t\t smse(y): av = {:.4e}, std = {:.4e}" \
+         "\n\t\t smse(g): av = {:.4e}, std = {:.4e}" \
          "\n\t Taylor linearisation  --" \
          "\n\t\t -ll(f): av = {:.5f}, std = {:.5f}" \
          "\n\t\t smse(f): av = {:.4e}, std = {:.4e}"\
          "\n\t\t smse(y): av = {:.4e}, std = {:.4e}" \
+         "\n\t\t smse(g): av = {:.4e}, std = {:.4e}" \
          .format(llf_s.mean(), llf_s.std(),
                  SMSEf_s.mean(), SMSEf_s.std(),
                  SMSEy_s.mean(), SMSEy_s.std(),
+                 SMSEg_s.mean(), SMSEg_s.std(),
                  llf_t.mean(), llf_t.std(),
                  SMSEf_t.mean(), SMSEf_t.std(),
-                 SMSEy_t.mean(), SMSEy_t.std())
+                 SMSEy_t.mean(), SMSEy_t.std(),
+                 SMSEg_t.mean(), SMSEg_t.std())
 
 
 if dolinear is True:
@@ -207,14 +217,18 @@ if dolinear is True:
                       SMSEf_l.mean(), SMSEf_l.std())
 
 resstr += "\n\n"
-resstr += "& UGP & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} \\\\\n"\
+resstr += "& UGP & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f}" \
+    " {:.5f} & {:.5f} \\\\\n"\
     .format(llf_s.mean(), llf_s.std(),
             SMSEf_s.mean(), SMSEf_s.std(),
-            SMSEy_s.mean(), SMSEy_s.std())
-resstr += "& EGP & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} \\\\\n"\
+            SMSEy_s.mean(), SMSEy_s.std(),
+            SMSEg_s.mean(), SMSEg_s.std())
+resstr += "& EGP & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f} & {:.5f}" \
+    " {:.5f} & {:.5f} \\\\\n"\
     .format(llf_t.mean(), llf_t.std(),
             SMSEf_t.mean(), SMSEf_t.std(),
-            SMSEy_t.mean(), SMSEy_t.std())
+            SMSEy_t.mean(), SMSEy_t.std(),
+            SMSEg_t.mean(), SMSEg_t.std())
 if dolinear is True:
     resstr += "& GP & {:.5f} & {:.5f} & {:.5f} & {:.5f} & -- & -- \\\\\n"\
         .format(llf_l.mean(), llf_l.std(),

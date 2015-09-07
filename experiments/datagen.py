@@ -86,7 +86,8 @@ for fwdmdlInd in range(len(savenameList)):
                             k_length))
     L = U.dot(np.diag(np.sqrt(S))).dot(V)
     f = fseed.dot(L)
-    y = nlfunc(f) + np.random.randn(npoints) * noise
+    g = nlfunc(f)
+    y = g + np.random.randn(npoints) * noise
 
     # Make the dictionary to save into a mat structure
     datadic = {
@@ -95,6 +96,7 @@ for fwdmdlInd in range(len(savenameList)):
         'dfunc':        dfctnList[fwdmdlInd],
         'x':            x,
         'f':            f,
+        'g':            g,
         'y':            y,
         'train':        [],
         'test':         []
