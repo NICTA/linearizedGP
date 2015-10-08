@@ -10,11 +10,12 @@ setup(
                 'processes.',
     author='Daniel Steinberg',
     author_email='daniel.steinberg@nicta.com.au',
-    url='',
+    url='https://github.com/NICTA/linearizedGP',
+    license='LGPLv3',
     packages=['linearizedGP'],
-    install_requires=[
-        "scipy >= 0.12.0",  # These may be able to be lower, just not tested
-        "numpy >= 1.8.0",
-        # NLopt >= 2.4.2
-        ]
+    install_requires=["scipy >= 0.12.0",
+                      "numpy >= 1.8.0"
+                      # NLopt >= 2.4.2
+                      ],
+    provides=['linearizedGP']
 )
