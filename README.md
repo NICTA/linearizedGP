@@ -1,7 +1,7 @@
 Extended and Unscented Gaussian Processes
 =========================================
 
-**Author**: [Daniel Steinberg](http://www.daniel-steinberg.info)
+**Author**: [Daniel Steinberg](http://dsteinberg.github.io/)
 
 **Date**: 31st Oct 2014
 
